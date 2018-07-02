@@ -1,6 +1,16 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
+const Button = ({ handleClick, text }) => {
+    return (
+        <button onClick={handleClick}>
+        {text}
+        </button>
+    )
+}
+
+const randomAnecdote = (tablesize) => {return Math.floor((Math.random() * tablesize))}
+
 class App extends React.Component {
   constructor(props) {
     super(props)
@@ -10,8 +20,14 @@ class App extends React.Component {
   }
 
   render() {
+    const setToValue = (newValue) => () => { 
+        this.setState({ selected: newValue })
+    }
+
     return (
       <div>
+        <Button text="Show random anecodote" handleClick={setToValue(randomAnecdote(anecdotes.length))}></Button>
+        <br></br>
         {this.props.anecdotes[this.state.selected]}
       </div>
     )
