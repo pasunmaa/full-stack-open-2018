@@ -13,7 +13,7 @@ const Button = ({ handleClick, text }) => {
 
 const summa = (a, b, c) => a + b + c
 const keskiarvo = (a, b, c) => (a * 1 + b * 0 + c * -1) / summa(a, b, c)
-const naytakeskiarvo = (a, b, c) => summa(a, b, c) ? keskiarvo(a, b, c) : 0 
+const naytakeskiarvo = (a, b, c) => summa(a, b, c) ? roundToOne(keskiarvo(a, b, c)) : 0 
 const positiivisia = (a, b, c) => a / summa(a, b, c)
 const naytapositiivisia = (a, b, c) => summa(a, b, c) ? roundToOne(positiivisia(a, b, c) * 100) : 0
 const roundToOne = (num) => {    
@@ -21,20 +21,28 @@ const roundToOne = (num) => {
 }
 
 // Statistic huolehtii yksittäisen tilastorivin, esim. keskiarvon näyttämisestä
-const Statistic = ({ tilastotieto, arvo }) => <div><ul>{tilastotieto}: {arvo}</ul></div>
+const Statistic = ({ tilastotieto, arvo, yksikko }) => <div>{tilastotieto}: {arvo} {yksikko}</div>
     
 // Statistics huolehtii tilastojen näyttämisestä
 const Statistics = ({ hyva, neutraali, huono }) => {
-    return (
-        <div>
-            <h1>statistiikka</h1>
-            <Statistic tilastotieto="hyvä" arvo={hyva}></Statistic>
-            <Statistic tilastotieto="neutraali" arvo={neutraali}></Statistic>
-            <Statistic tilastotieto="huono" arvo={huono}></Statistic>
-            <Statistic tilastotieto="keskiarvo" arvo={naytakeskiarvo(hyva, neutraali, huono)}></Statistic>
-            <Statistic tilastotieto="positiivisia" arvo={naytapositiivisia(hyva, neutraali, huono)}></Statistic>
-        </div>
-    )
+    if (summa(hyva, neutraali, huono))
+        return (
+            <div>
+                <h1>statistiikka</h1>
+                <Statistic tilastotieto="hyvä" arvo={hyva}></Statistic>
+                <Statistic tilastotieto="neutraali" arvo={neutraali}></Statistic>
+                <Statistic tilastotieto="huono" arvo={huono}></Statistic>
+                <Statistic tilastotieto="keskiarvo" arvo={naytakeskiarvo(hyva, neutraali, huono)}></Statistic>
+                <Statistic tilastotieto="positiivisia" arvo={naytapositiivisia(hyva, neutraali, huono)} yksikko="%"></Statistic>
+            </div>
+        )
+    else   
+        return (
+            <div>
+                <h1>statistiikka</h1>
+                ei yhtään palautetta annettu
+            </div>
+        )
 }
 
 class App extends React.Component {
