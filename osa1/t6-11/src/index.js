@@ -2,6 +2,41 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
+// Button vastaa yksittäistä palautteenantonappia
+const Button = ({ handleClick, text }) => {
+    return (
+        <button onClick={handleClick}>
+        {text}
+        </button>
+    )
+}
+
+const summa = (a, b, c) => a + b + c
+const keskiarvo = (a, b, c) => (a * 1 + b * 0 + c * -1) / summa(a, b, c)
+const naytakeskiarvo = (a, b, c) => summa(a, b, c) ? keskiarvo(a, b, c) : 0 
+const positiivisia = (a, b, c) => a / summa(a, b, c)
+const naytapositiivisia = (a, b, c) => summa(a, b, c) ? roundToOne(positiivisia(a, b, c) * 100) : 0
+const roundToOne = (num) => {    
+    return + (Math.round(num + "e+1")  + "e-1");
+}
+
+// Statistic huolehtii yksittäisen tilastorivin, esim. keskiarvon näyttämisestä
+const Statistic = ({ tilastotieto, arvo }) => <div><ul>{tilastotieto}: {arvo}</ul></div>
+    
+// Statistics huolehtii tilastojen näyttämisestä
+const Statistics = ({ hyva, neutraali, huono }) => {
+    return (
+        <div>
+            <h1>statistiikka</h1>
+            <Statistic tilastotieto="hyvä" arvo={hyva}></Statistic>
+            <Statistic tilastotieto="neutraali" arvo={neutraali}></Statistic>
+            <Statistic tilastotieto="huono" arvo={huono}></Statistic>
+            <Statistic tilastotieto="keskiarvo" arvo={naytakeskiarvo(hyva, neutraali, huono)}></Statistic>
+            <Statistic tilastotieto="positiivisia" arvo={naytapositiivisia(hyva, neutraali, huono)}></Statistic>
+        </div>
+    )
+}
+
 class App extends React.Component {
     constructor() {
       super()
@@ -12,16 +47,7 @@ class App extends React.Component {
       }
     }
   
-    render() {
-        const summa = (a, b, c) => a + b + c
-        const keskiarvo = (a, b, c) => (a * 1 + b * 0 + c * -1) / summa(a, b, c)
-        const naytakeskiarvo = (a, b, c) => summa(a, b, c) ? keskiarvo(a, b, c) : 0 
-        const positiivisia = (a, b, c) => a / summa(a, b, c)
-        const naytapositiivisia = (a, b, c) => summa(a, b, c) ? roundToOne(positiivisia(a, b, c) * 100) : 0
-        const roundToOne = (num) => {    
-            return + (Math.round(num + "e+1")  + "e-1");
-        }
-        
+    render() {    
         const setToValue = (valueitem, newValue) => () => { 
             if (valueitem === "hyva")
                 this.setState({ hyva: newValue })
@@ -32,19 +58,18 @@ class App extends React.Component {
         }
     
         return (
-        <div>
-            <h1>anna palautetta</h1>
-            <button onClick={setToValue("hyva", this.state.hyva+1)}>hyvä</button>
-            <button onClick={setToValue("neutraali", this.state.neutraali+1)}>neutraali</button>
-            <button onClick={setToValue("huono", this.state.huono+1)}>huono</button>
+            <div>
+                <h1>anna palautetta</h1>
+                <Button handleClick={setToValue("hyva", this.state.hyva+1)} text="hyvä"></Button>
+                <Button handleClick={setToValue("neutraali", this.state.neutraali+1)} text="neutraali"></Button>
+                <Button handleClick={setToValue("huono", this.state.huono+1)} text="huono"></Button>
 
-            <h1>statistiikka</h1>
-            <ul>hyvä: {this.state.hyva}</ul>
-            <ul>neutraali: {this.state.neutraali}</ul>
-            <ul>huono: {this.state.huono}</ul>
-            <ul>keskiarvo: {naytakeskiarvo(this.state.hyva, this.state.neutraali, this.state.huono)}</ul>
-            <ul>positiivisia: {naytapositiivisia(this.state.hyva, this.state.neutraali, this.state.huono)} %</ul>
-        </div>
+                <Statistics 
+                    hyva={this.state.hyva} 
+                    neutraali={this.state.neutraali} 
+                    huono={this.state.huono}> 
+                </Statistics>
+            </div>
         )
     }
 }
