@@ -12,8 +12,15 @@ const Button = ({ handleClick, text }) => {
 }
 
 // Statistic huolehtii yksittäisen tilastorivin, esim. keskiarvon näyttämisestä
-const Statistic = ({ tilastotieto, arvo, yksikko }) => <div>{tilastotieto}: {arvo} {yksikko}</div>
-    
+const Statistic = ({ tilastotieto, arvo, yksikko }) => {
+    return (
+        <tr>
+            <td>{tilastotieto}</td> 
+            <td>{arvo} {yksikko}</td>
+        </tr>
+    )
+}
+   
 // Statistics huolehtii tilastojen näyttämisestä
 const Statistics = ({ hyva, neutraali, huono }) => {
     const summa = (a, b, c) => a + b + c
@@ -29,11 +36,15 @@ const Statistics = ({ hyva, neutraali, huono }) => {
         return (
             <div>
                 <h1>statistiikka</h1>
-                <Statistic tilastotieto="hyvä" arvo={hyva}></Statistic>
-                <Statistic tilastotieto="neutraali" arvo={neutraali}></Statistic>
-                <Statistic tilastotieto="huono" arvo={huono}></Statistic>
-                <Statistic tilastotieto="keskiarvo" arvo={naytakeskiarvo(hyva, neutraali, huono)}></Statistic>
-                <Statistic tilastotieto="positiivisia" arvo={naytapositiivisia(hyva, neutraali, huono)} yksikko="%"></Statistic>
+                <table>
+                    <tbody>
+                    <Statistic tilastotieto="hyvä" arvo={hyva}></Statistic>
+                    <Statistic tilastotieto="neutraali" arvo={neutraali}></Statistic>
+                    <Statistic tilastotieto="huono" arvo={huono}></Statistic>
+                    <Statistic tilastotieto="keskiarvo" arvo={naytakeskiarvo(hyva, neutraali, huono)}></Statistic>
+                    <Statistic tilastotieto="positiivisia" arvo={naytapositiivisia(hyva, neutraali, huono)} yksikko="%"></Statistic>
+                    </tbody>
+                </table>
             </div>
         )
     else   
