@@ -11,20 +11,20 @@ const Button = ({ handleClick, text }) => {
     )
 }
 
-const summa = (a, b, c) => a + b + c
-const keskiarvo = (a, b, c) => (a * 1 + b * 0 + c * -1) / summa(a, b, c)
-const naytakeskiarvo = (a, b, c) => summa(a, b, c) ? roundToOne(keskiarvo(a, b, c)) : 0 
-const positiivisia = (a, b, c) => a / summa(a, b, c)
-const naytapositiivisia = (a, b, c) => summa(a, b, c) ? roundToOne(positiivisia(a, b, c) * 100) : 0
-const roundToOne = (num) => {    
-    return + (Math.round(num + "e+1")  + "e-1");
-}
-
 // Statistic huolehtii yksittäisen tilastorivin, esim. keskiarvon näyttämisestä
 const Statistic = ({ tilastotieto, arvo, yksikko }) => <div>{tilastotieto}: {arvo} {yksikko}</div>
     
 // Statistics huolehtii tilastojen näyttämisestä
 const Statistics = ({ hyva, neutraali, huono }) => {
+    const summa = (a, b, c) => a + b + c
+    const keskiarvo = (a, b, c) => (a * 1 + b * 0 + c * -1) / summa(a, b, c)
+    const naytakeskiarvo = (a, b, c) => summa(a, b, c) ? roundToOne(keskiarvo(a, b, c)) : 0 
+    const positiivisia = (a, b, c) => a / summa(a, b, c)
+    const naytapositiivisia = (a, b, c) => summa(a, b, c) ? roundToOne(positiivisia(a, b, c) * 100) : 0
+    const roundToOne = (num) => {    
+        return + (Math.round(num + "e+1")  + "e-1");
+    }
+
     if (summa(hyva, neutraali, huono))
         return (
             <div>
@@ -57,12 +57,7 @@ class App extends React.Component {
   
     render() {    
         const setToValue = (valueitem, newValue) => () => { 
-            if (valueitem === "hyva")
-                this.setState({ hyva: newValue })
-            else if (valueitem === "neutraali")
-                this.setState({ neutraali: newValue })
-            else 
-                this.setState({ huono: newValue })
+            this.setState({ [valueitem]: newValue })
         }
     
         return (
