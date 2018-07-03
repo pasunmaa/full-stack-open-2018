@@ -10,6 +10,8 @@ const Button = ({ handleClick, text }) => {
 }
 
 const randomAnecdote = (tablesize) => {return Math.floor((Math.random() * tablesize))}
+const maxVotes = (votesarray) => Math.max(...votesarray)
+const findIndexOfMaxVotes = (votesarray) => votesarray.findIndex(maxvote => maxvote == maxVotes(votesarray))
 
 class App extends React.Component {
   constructor(props) {
@@ -39,6 +41,11 @@ class App extends React.Component {
         <br></br>
         <Button text="Show next anecodote" handleClick={setToValue(randomAnecdote(anecdotes.length))}></Button>
         <Button text="Vote" handleClick={voteCurrentAnecdote() }></Button>
+        <br></br>
+        <h1>anecodote with most votes:</h1>
+        {this.props.anecdotes[findIndexOfMaxVotes(this.state.votes)]}
+        <br></br>
+        has {maxVotes(this.state.votes)} votes.
       </div>
     )
   }
