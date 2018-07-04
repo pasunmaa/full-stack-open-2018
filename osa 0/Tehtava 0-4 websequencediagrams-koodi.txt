@@ -1,0 +1,40 @@
+kayttaja->selain:
+note left of selain
+Käyttäjä kirjoittaa sivun tekstikenttään jotain ja painaa Talleta-nappia.
+end note
+note left of palvelin
+  Selain lähettää palvelimelle HTML-lomakkeen, 
+  jonka sisältönä on tekstikentän teksti.
+end note
+
+selain->palvelin: POST https://fullstack-exampleapp.herokuapp.com/new_note
+palvelin->selain: status 302, sivun HTML-koodi
+
+note left of palvelin
+  Palvelimen vastauskoodi 302, kehoittaa selainta hakemaan 
+  sivun sisällön uudelleen (HTML, CSS-tyylit, JS-sorsat ja JSON-data).
+end note
+selain->palvelin: GET fullstack-exampleapp.herokuapp.com/notes
+palvelin->selain: status 200, sivun HTML-koodi
+
+note left of palvelin
+  Haetaan sivun HTML:n viittaamat tyylit (CSS) ja Javascript-koodit
+end note
+selain->palvelin: GET https://fullstack-exampleapp.herokuapp.com/main.css
+palvelin->selain: status 200, sivun CSS-koodi
+
+selain->palvelin: GET https://fullstack-exampleapp.herokuapp.com/main.js
+palvelin->selain: status 200, sivun Javascript-koodi
+
+note left of palvelin
+  Haetaan sivun JSON-formaatin mukaiset muistiinpanot
+end note
+
+selain->palvelin: GET https://fullstack-exampleapp.herokuapp.com/data.json
+palvelin->selain: status 200, sivun datat JSON-formaatissa
+
+note left of selain
+ selain näyttää palvelimen palauttaman HTML:n
+ johon on upotettu palvelimelta haetut muistiinpanot 
+ sisältäen nyt lisätty rivi.
+end note

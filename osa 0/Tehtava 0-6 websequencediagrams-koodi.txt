@@ -1,0 +1,21 @@
+kayttaja->selain:
+note left of selain
+Käyttäjä kirjoittaa sivun tekstikenttään jotain ja
+painaa Talleta-nappia.
+end note
+note left of palvelin
+  Selain lähettää palvelimelle datan päivityspyynnön, 
+  jonka sisältönä on tekstikentän teksti.
+end note
+
+selain->palvelin: POST https://fullstack-exampleapp.herokuapp.com/new_note_spa
+palvelin->selain: status 201, sivun HTML-koodi
+
+note left of palvelin
+  Palvelimen vastauskoodi 201 kertoo päivityksen onnistuneen.
+end note
+
+note left of selain
+  Koska palvelin EI pyydä uudelleenohjausta, 
+  sivun uudelleen päivitystä ei ole tarpeen tehdä.
+end note

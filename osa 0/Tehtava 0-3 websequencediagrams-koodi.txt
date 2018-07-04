@@ -1,0 +1,33 @@
+kayttaja->selain:
+note left of selain
+kayttaja klikkaa muistiinpanot-linkkiä sovelluksessa. 
+Linkki osittaa URL:iin:
+fullstack-exampleapp.herokuapp.com/notes
+end note
+note left of palvelin
+  Haetaan sivun HTML-koodi
+end note
+
+selain->palvelin: GET fullstack-exampleapp.herokuapp.com/notes
+palvelin->selain: status 200, sivun HTML-koodi
+
+note left of palvelin
+  Haetaan sivun HTML:n viittaamat tyylit (CSS) ja Javascript-koodit
+end note
+selain->palvelin: GET https://fullstack-exampleapp.herokuapp.com/main.css
+palvelin->selain: status 200, sivun CSS-koodi
+
+selain->palvelin: GET https://fullstack-exampleapp.herokuapp.com/main.js
+palvelin->selain: status 200, sivun Javascript-koodi
+
+note left of palvelin
+  Haetaan sivun JSON-formaatin mukaiset muistiinpanot
+end note
+
+selain->palvelin: GET https://fullstack-exampleapp.herokuapp.com/data.json
+palvelin->selain: status 200, sivun datat JSON-formaatissa
+
+note left of selain
+ selain näyttää palvelimen palauttaman HTML:n
+ johon on upotettu palvelimelta haetut muistiinpanot
+end note
