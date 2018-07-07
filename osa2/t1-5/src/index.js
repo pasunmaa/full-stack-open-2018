@@ -26,10 +26,8 @@ const Osa = (props) => <p>{props.osa} {props.tehtavia}</p>
 
 const Yhteensa = (props) => {
   const osat = props.kurssi.osat
-  let yhteensa = 0
-  for (let i = 0; i < osat.length; i++) {
-    yhteensa += osat[i].tehtavia;
-  }
+  let yhteensa = osat.reduce(
+    (accumulator, currentValue) => accumulator + currentValue.tehtavia, 0)
   
   return(
     <p>yhteensä {yhteensa} tehtävää</p>
