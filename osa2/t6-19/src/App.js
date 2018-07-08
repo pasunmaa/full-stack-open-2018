@@ -14,22 +14,30 @@ class App extends React.Component {
 
   lisaaNimi = (event) => {
     event.preventDefault()
-    const personObject = {
-      name: this.state.newName,
-      /* date: new Date().toISOString(), */
-      id: this.state.persons.length + 1
+
+    if (this.state.persons.findIndex(
+      person => this.state.newName === person.name) > -1) {
+        //console.log(this.state.newName)
+        alert(`${this.state.newName} on jo luettelossa`)
     }
-  
-    const persons = this.state.persons.concat(personObject)
-  
-    this.setState({
-      persons: persons,
-      personObject: ''
-    })
+    else {
+      const personObject = {
+        name: this.state.newName,
+        /* date: new Date().toISOString(), */
+        id: this.state.persons.length + 1
+      }
+    
+      const persons = this.state.persons.concat(personObject)
+    
+      this.setState({
+        persons: persons,
+        personObject: ''
+      })
+    }
   }
   
   handlePersonChange = (event) => {
-    console.log(event.target.value)
+    //console.log(event.target.value)
     this.setState({ newName: event.target.value })
   }
 
