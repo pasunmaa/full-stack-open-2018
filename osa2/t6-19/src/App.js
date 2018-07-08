@@ -6,9 +6,11 @@ class App extends React.Component {
     this.state = {
       persons: [
         { name: 'Arto Hellas',
+          phonenumber: '040-123456',
           id: 1 }
       ],
-      newName: ''
+      newName: '',
+      newNumber: ''
     }
   }
 
@@ -22,9 +24,9 @@ class App extends React.Component {
     }
     else {
       const personObject = {
+        id: this.state.persons.length + 1,
         name: this.state.newName,
-        /* date: new Date().toISOString(), */
-        id: this.state.persons.length + 1
+        phonenumber: this.state.newNumber
       }
     
       const persons = this.state.persons.concat(personObject)
@@ -41,11 +43,16 @@ class App extends React.Component {
     this.setState({ newName: event.target.value })
   }
 
+  handleNumberChange = (event) => {
+    //console.log(event.target.value)
+    this.setState({ newNumber: event.target.value })
+  }
+
   render() {
     return (
       <div>
         <div>
-          debug: {this.state.newName}
+          {/* debug: {this.state.newName}, {this.state.newNumber} */}
         </div>
         <h2>Puhelinluettelo</h2>
         <form onSubmit={this.lisaaNimi}>
@@ -55,12 +62,23 @@ class App extends React.Component {
               onChange={this.handlePersonChange} />
           </div>
           <div>
+            numero: <input 
+              value={this.state.newNumber}
+              onChange={this.handleNumberChange} />
+          </div>
+          <div>
             <button type="submit" >lisää</button>
           </div>
         </form>
         <h2>Numerot</h2>
-        <div>{this.state.persons.map(
-          person => <div key={person.id}>{person.name}</div>)}</div>
+        <table>
+          <tbody>{this.state.persons.map(
+            person => <tr key={person.id}>
+              <td>{person.name}</td>
+              <td>{person.phonenumber}</td>
+              </tr>)}
+          </tbody>
+        </table>
       </div>
     )
   }
