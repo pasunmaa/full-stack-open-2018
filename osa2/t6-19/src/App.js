@@ -5,12 +5,14 @@ class App extends React.Component {
     super(props)
     this.state = {
       persons: [
-        { name: 'Arto Hellas',
-          phonenumber: '040-123456',
-          id: 1 }
+        { id: 1, name: 'Arto Hellas', phonenumber: '040-123456' },
+        { id: 2, name: 'Martti Tienari', phonenumber: '040-123456' },
+        { id: 3, name: 'Arto Järvinen', phonenumber: '040-123456' },
+        { id: 4, name: 'Lea Kutvonen', phonenumber: '040-123456' }
       ],
       newName: '',
-      newNumber: ''
+      newNumber: '',
+      filter: ''
     }
   }
 
@@ -38,6 +40,11 @@ class App extends React.Component {
     }
   }
   
+  handleFilterChange = (event) => {
+    //console.log(event.target.value)
+    this.setState({ filter: event.target.value })
+  }
+
   handlePersonChange = (event) => {
     //console.log(event.target.value)
     this.setState({ newName: event.target.value })
@@ -49,12 +56,24 @@ class App extends React.Component {
   }
 
   render() {
+    const personsToShow =
+      this.state.filter === '' ?
+        this.state.persons :
+        this.state.persons.filter(
+          person => person.name.includes(this.state.filter))
+        
     return (
       <div>
         <div>
-          {/* debug: {this.state.newName}, {this.state.newNumber} */}
+          {/* debug: filter = {this.state.filter} */}
         </div>
         <h2>Puhelinluettelo</h2>
+        <div>
+            rajaa näytettäviä: <input 
+              value={this.state.filter}
+              onChange={this.handleFilterChange} />
+        </div>
+        <h2>Lisää uusi</h2>
         <form onSubmit={this.lisaaNimi}>
           <div>
             nimi: <input 
@@ -72,7 +91,7 @@ class App extends React.Component {
         </form>
         <h2>Numerot</h2>
         <table>
-          <tbody>{this.state.persons.map(
+          <tbody>{personsToShow.map(
             person => <tr key={person.id}>
               <td>{person.name}</td>
               <td>{person.phonenumber}</td>
