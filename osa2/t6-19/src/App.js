@@ -15,11 +15,11 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    console.log('did mount')
+    //console.log('did mount')
     axios
       .get('http://localhost:3001/persons')
       .then(response => {
-        console.log('promise fulfilled')
+        //console.log('promise fulfilled')
         this.setState({ persons: response.data })
       })
   }
@@ -40,12 +40,16 @@ class App extends React.Component {
       }
     
       const persons = this.state.persons.concat(personObject)
-    
-      this.setState({
-        persons: persons,
-        personObject: '',
-        newName: '',
-        newNumber: ''})
+
+      axios.post('http://localhost:3001/persons', personObject)
+        .then(response => {
+          //console.log(response)
+          this.setState({
+            persons: persons,
+            personObject: '',
+            newName: '',
+            newNumber: ''})
+      })
     }
   }
   
