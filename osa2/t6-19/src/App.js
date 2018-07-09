@@ -31,31 +31,35 @@ class App extends React.Component {
   lisaaNimi = (event) => {
     event.preventDefault()
 
-    if (this.state.persons.findIndex(
-      person => this.state.newName === person.name) > -1) {
-        //console.log(this.state.newName)
-        alert(`${this.state.newName} on jo luettelossa`)
-    }
-    else {
-      const newId = this.state.maxId + 1
-      const personObject = {
-        id: newId,
-        name: this.state.newName,
-        phonenumber: this.state.newNumber
+    // allow adding only then fields have inserted values
+    if (this.state.newName !== '' && this.state.newNumber !== '' )
+    {
+      if (this.state.persons.findIndex(
+        person => this.state.newName === person.name) > -1) {
+          //console.log(this.state.newName)
+          alert(`${this.state.newName} on jo luettelossa`)
       }
-    
-      personService
-        .create(personObject)
-        .then(response => {
-          const persons = this.state.persons.concat(personObject)
-          this.setState({
-            persons: persons,
-            personObject: '',
-            newName: '',
-            newNumber: '',
-            maxId: newId
-          })
-      })
+      else {
+        const newId = this.state.maxId + 1
+        const personObject = {
+          id: newId,
+          name: this.state.newName,
+          phonenumber: this.state.newNumber
+        }
+      
+        personService
+          .create(personObject)
+          .then(response => {
+            const persons = this.state.persons.concat(personObject)
+            this.setState({
+              persons: persons,
+              personObject: '',
+              newName: '',
+              newNumber: '',
+              maxId: newId
+            })
+        })
+      }
     }
   }
   
@@ -76,17 +80,19 @@ class App extends React.Component {
 
   handlePersonDelete = (id) => {
     return () => {
-      personService
-        .remove(id)
-        .then(response => {
-          const persons = this.state.persons.filter(person => person.id !== id)
-          console.log(persons)
-          this.setState({
-            persons: persons,
-            /* personObject: '',
-            newName: '',
-            newNumber: '' */})
-      })
+      if (window.confirm(`Poistetaanko ${this.state.persons.filter(person => person.id === id)[0].name} ?`)) {
+        personService
+          .remove(id)
+          .then(response => {
+            const persons = this.state.persons.filter(person => person.id !== id)
+            //console.log(persons)
+            this.setState({
+              persons: persons,
+              /* personObject: '',
+              newName: '',
+              newNumber: '' */})
+        })
+      }
     }
   }
 
