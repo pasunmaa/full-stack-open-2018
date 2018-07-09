@@ -34,10 +34,31 @@ class App extends React.Component {
     // allow adding only then fields have inserted values
     if (this.state.newName !== '' && this.state.newNumber !== '' )
     {
-      if (this.state.persons.findIndex(
-        person => this.state.newName === person.name) > -1) {
+      let currentIndex = this.state.persons.findIndex(
+        person => this.state.newName === person.name)
+      if (currentIndex > -1) {
           //console.log(this.state.newName)
-          alert(`${this.state.newName} on jo luettelossa`)
+          if (window.confirm(
+            `* ${this.state.newName} on jo luettelossa, korvataanko vanha numero uudella?`)) {
+              const currentId = this.state.persons[currentIndex].id
+              const personObject = {
+                id: currentId,
+                name: this.state.newName,
+                phonenumber: this.state.newNumber
+              }      
+              personService
+                .update(currentId, personObject)
+                .then(response => {
+                  const persons = this.state.persons.map(
+                    person => person.id === currentId? personObject : person)
+                  this.setState({
+                    persons: persons,
+                    personObject: '',
+                    newName: '',
+                    newNumber: ''
+                  })
+                })
+          }
       }
       else {
         const newId = this.state.maxId + 1
