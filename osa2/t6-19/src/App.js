@@ -1,21 +1,27 @@
 import React from 'react'
 import FilterPerson from '.\\components\\FilterPerson'
 import {AddPerson, ShowPerson} from '.\\components\\Person'
+import axios from 'axios'
 
 class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      persons: [
-        { id: 1, name: 'Arto Hellas', phonenumber: '040-123456' },
-        { id: 2, name: 'Martti Tienari', phonenumber: '040-654321' },
-        { id: 3, name: 'Arto Järvinen', phonenumber: '040-123456' },
-        { id: 4, name: 'Lea Kutvonen', phonenumber: '040-123456' }
-      ],
+      persons: [],
       newName: '',
       newNumber: '',
       filter: ''
     }
+  }
+
+  componentDidMount() {
+    console.log('did mount')
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        console.log('promise fulfilled')
+        this.setState({ persons: response.data })
+      })
   }
 
   lisaaNimi = (event) => {
