@@ -1,7 +1,7 @@
 import React from 'react'
 import FilterPerson from '.\\components\\FilterPerson'
 import {AddPerson, ShowPerson} from '.\\components\\Person'
-import axios from 'axios'
+import personService from '.\\services\\persons'
 
 class App extends React.Component {
   constructor(props) {
@@ -16,11 +16,10 @@ class App extends React.Component {
 
   componentDidMount() {
     //console.log('did mount')
-    axios
-      .get('http://localhost:3001/persons')
+    personService
+      .getAll()
       .then(response => {
-        //console.log('promise fulfilled')
-        this.setState({ persons: response.data })
+        this.setState({ persons: response })
       })
   }
 
@@ -39,11 +38,10 @@ class App extends React.Component {
         phonenumber: this.state.newNumber
       }
     
-      const persons = this.state.persons.concat(personObject)
-
-      axios.post('http://localhost:3001/persons', personObject)
+      personService
+        .create(personObject)
         .then(response => {
-          //console.log(response)
+          const persons = this.state.persons.concat(personObject)
           this.setState({
             persons: persons,
             personObject: '',
