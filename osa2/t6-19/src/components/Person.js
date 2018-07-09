@@ -20,11 +20,12 @@ const AddPerson = ({name, number, handlePersonChange, handleNumberChange, lisaaN
   )
 }
 
-const ShowPerson = ({name, number}) => {
+const ShowPerson = ({name, number, handleDelete}) => {
   return (
     <tr>
       <td>{name}</td>
       <td>{number}</td>
+      <td><button onClick={handleDelete}>poista</button></td>
     </tr>
   )
 }

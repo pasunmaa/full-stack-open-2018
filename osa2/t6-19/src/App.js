@@ -10,7 +10,8 @@ class App extends React.Component {
       persons: [],
       newName: '',
       newNumber: '',
-      filter: ''
+      filter: '',
+      maxId: 0 // this is used to provide unique for all new persons
     }
   }
 
@@ -19,7 +20,11 @@ class App extends React.Component {
     personService
       .getAll()
       .then(response => {
-        this.setState({ persons: response })
+        // find max used id number from response
+        //console.log("response = ", response)
+        let maxUsedId = response.reduce( ( accumulator, person ) => Math.max(accumulator, person.id), -1 )
+        //console.log("maxUsedId = ", maxUsedId)
+        this.setState({ persons: response, maxId: maxUsedId })
       })
   }
 
@@ -32,8 +37,9 @@ class App extends React.Component {
         alert(`${this.state.newName} on jo luettelossa`)
     }
     else {
+      const newId = this.state.maxId + 1
       const personObject = {
-        id: this.state.persons.length + 1,
+        id: newId,
         name: this.state.newName,
         phonenumber: this.state.newNumber
       }
@@ -46,7 +52,9 @@ class App extends React.Component {
             persons: persons,
             personObject: '',
             newName: '',
-            newNumber: ''})
+            newNumber: '',
+            maxId: newId
+          })
       })
     }
   }
@@ -64,6 +72,22 @@ class App extends React.Component {
   handleNumberChange = (event) => {
     //console.log(event.target.value)
     this.setState({ newNumber: event.target.value })
+  }
+
+  handlePersonDelete = (id) => {
+    return () => {
+      personService
+        .remove(id)
+        .then(response => {
+          const persons = this.state.persons.filter(person => person.id !== id)
+          console.log(persons)
+          this.setState({
+            persons: persons,
+            /* personObject: '',
+            newName: '',
+            newNumber: '' */})
+      })
+    }
   }
 
   render() {
@@ -90,7 +114,8 @@ class App extends React.Component {
             <ShowPerson 
               key={person.id} 
               name={person.name}
-              number={person.phonenumber} />
+              number={person.phonenumber}
+              handleDelete={this.handlePersonDelete(person.id)} />
             )}
           </tbody>
         </table>
