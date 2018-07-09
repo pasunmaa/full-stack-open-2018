@@ -1,4 +1,6 @@
-import React from 'react';
+import React from 'react'
+import FilterPerson from '.\\components\\FilterPerson'
+import {AddPerson, ShowPerson} from '.\\components\\Person'
 
 class App extends React.Component {
   constructor(props) {
@@ -6,7 +8,7 @@ class App extends React.Component {
     this.state = {
       persons: [
         { id: 1, name: 'Arto Hellas', phonenumber: '040-123456' },
-        { id: 2, name: 'Martti Tienari', phonenumber: '040-123456' },
+        { id: 2, name: 'Martti Tienari', phonenumber: '040-654321' },
         { id: 3, name: 'Arto Järvinen', phonenumber: '040-123456' },
         { id: 4, name: 'Lea Kutvonen', phonenumber: '040-123456' }
       ],
@@ -35,16 +37,17 @@ class App extends React.Component {
     
       this.setState({
         persons: persons,
-        personObject: ''
-      })
+        personObject: '',
+        newName: '',
+        newNumber: ''})
     }
   }
   
   handleFilterChange = (event) => {
-    //console.log(event.target.value)
-    this.setState({ filter: event.target.value })
+      //console.log(event.target.value) 
+      this.setState({ filter: event.target.value })
   }
-
+    
   handlePersonChange = (event) => {
     //console.log(event.target.value)
     this.setState({ newName: event.target.value })
@@ -64,38 +67,23 @@ class App extends React.Component {
         
     return (
       <div>
-        <div>
-          {/* debug: filter = {this.state.filter} */}
-        </div>
         <h2>Puhelinluettelo</h2>
-        <div>
-            rajaa näytettäviä: <input 
-              value={this.state.filter}
-              onChange={this.handleFilterChange} />
-        </div>
+          <FilterPerson filter={this.state.filter} handlechange={this.handleFilterChange} />
         <h2>Lisää uusi</h2>
-        <form onSubmit={this.lisaaNimi}>
-          <div>
-            nimi: <input 
-              value={this.state.newName}
-              onChange={this.handlePersonChange} />
-          </div>
-          <div>
-            numero: <input 
-              value={this.state.newNumber}
-              onChange={this.handleNumberChange} />
-          </div>
-          <div>
-            <button type="submit" >lisää</button>
-          </div>
-        </form>
+          <AddPerson 
+              name={this.state.newName} 
+              number={this.state.newNumber}
+              handlePersonChange={this.handlePersonChange}
+              handleNumberChange={this.handleNumberChange}
+              lisaaNimi={this.lisaaNimi}/>
         <h2>Numerot</h2>
         <table>
-          <tbody>{personsToShow.map(
-            person => <tr key={person.id}>
-              <td>{person.name}</td>
-              <td>{person.phonenumber}</td>
-              </tr>)}
+          <tbody>{personsToShow.map(person => 
+            <ShowPerson 
+              key={person.id} 
+              name={person.name}
+              number={person.phonenumber} />
+            )}
           </tbody>
         </table>
       </div>
