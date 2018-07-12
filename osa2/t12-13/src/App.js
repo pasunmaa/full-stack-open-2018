@@ -27,11 +27,20 @@ class App extends Component {
     this.setState({ country: event.target.value })
   }
 
+  handleCountryClick = (countryid) => () =>
+  {
+    //console.log("handleCountryClick "+countryid, this.state.countries.find(country => country.id===countryid))
+    this.setState({ country: this.state.countries.find(country => country.id===countryid).name })
+  }
+
   render() {
     return (
       <div>
         <FindCountries country={this.state.country} handleCountryChange={this.handleCountryChange} />
-        <ListCountries allcountries={this.state.countries} filter={this.state.country} />
+        <ListCountries 
+            allcountries={this.state.countries} 
+            filter={this.state.country} 
+            clickhandler={this.handleCountryClick}/>
       </div>
     )
   }

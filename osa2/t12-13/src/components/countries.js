@@ -11,7 +11,7 @@ const FindCountries = ({country, handleCountryChange}) => {
     )
 } 
   
-const ListCountries = ({allcountries, filter}) => {
+const ListCountries = ({allcountries, filter, clickhandler}) => {
     //console.log('ListCountries: ', allcountries)
     const countries = allcountries.filter(country => country.name.toLowerCase().indexOf(filter.toLowerCase()) !== -1)
     //const countries = allcountries.filter(country => country.name === filter)
@@ -37,7 +37,7 @@ const ListCountries = ({allcountries, filter}) => {
     }
     else
         return(
-            countries.map(country =><div key={country.id}>{country.name}</div>)
+            countries.map(country =><div onClick={clickhandler(country.id)} key={country.id}>{country.name}</div>)
     )
 } 
   
