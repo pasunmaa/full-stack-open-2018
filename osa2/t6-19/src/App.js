@@ -69,6 +69,17 @@ class App extends React.Component {
                     newNumber: ''
                   })
                 })
+                .catch(error => {
+                  //console.log(error)
+                  //console.log(error.response.status)
+                  if (error.response.status === 404) {
+                    this.asetaIlmoitus('päivitys epäonnistui, koska ' + this.state.newName + ' on poistettu palvelimelta')
+                    // poistetaan henkilö myös lokaalista listasta
+                    const persons = this.state.persons.filter(person => person.name !== this.state.newName)
+                    //console.log(persons)
+                    this.setState({persons: persons})
+                  }
+                })
           }
       }
       else {
