@@ -1,5 +1,6 @@
 import axios from 'axios'
-const baseUrl = 'https://petria-puhelinluettelo-3-10.now.sh/api/persons'
+//const baseUrl = 'https://petria-puhelinluettelo-3-10.now.sh/api/persons'
+const baseUrl = '/api/persons'   // relative URL
 
 const getAll = () => {
   const request = axios.get(baseUrl)
