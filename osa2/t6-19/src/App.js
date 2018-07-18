@@ -12,7 +12,7 @@ class App extends React.Component {
       newName: '',
       newNumber: '',
       filter: '',
-      maxId: 0, // this is used to provide unique for all new persons
+      //maxId: 0, // this is used to provide unique for all new persons
       infoMessage: ''
     }
   }
@@ -24,9 +24,9 @@ class App extends React.Component {
       .then(response => {
         // find max used id number from response
         //console.log("response = ", response)
-        let maxUsedId = response.reduce( ( accumulator, person ) => Math.max(accumulator, person.id), -1 )
+        //let maxUsedId = response.reduce( ( accumulator, person ) => Math.max(accumulator, person.id), -1 )
         //console.log("maxUsedId = ", maxUsedId)
-        this.setState({ persons: response, maxId: maxUsedId })
+        this.setState({ persons: response}) //, maxId: maxUsedId })
       })
   }
 
@@ -83,9 +83,9 @@ class App extends React.Component {
           }
       }
       else {
-        const newId = this.state.maxId + 1
+        //const newId = this.state.maxId + 1
         const personObject = {
-          id: newId,
+          //id: newId,
           name: this.state.newName,
           phonenumber: this.state.newNumber
         }
@@ -93,6 +93,8 @@ class App extends React.Component {
         personService
           .create(personObject)
           .then(response => {
+            //console.log(response)
+            personObject.id = response.id  // tallennetaan id:ksi back-endin / tietokannan generoima id
             const persons = this.state.persons.concat(personObject)
             this.asetaIlmoitus('lisättiin ' + this.state.newName)
             this.setState({
@@ -100,7 +102,7 @@ class App extends React.Component {
               personObject: '',
               newName: '',
               newNumber: '',
-              maxId: newId
+              //maxId: newId
             })
         })
       }
@@ -165,7 +167,7 @@ class App extends React.Component {
         <table>
           <tbody>{personsToShow.map(person => 
             <ShowPerson 
-              key={person.id} 
+              key={person.id}   
               name={person.name}
               number={person.phonenumber}
               handleDelete={this.handlePersonDelete(person.id)} />
